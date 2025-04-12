@@ -1,2 +1,11 @@
 eln-cache
 auto-save-list
+elpa
+transient
+savefile
+savehist
+desktop
+tramp
+recentf
+*~
+.DS_Store

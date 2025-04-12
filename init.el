@@ -2,13 +2,12 @@
 ;;; Commentary: 福福的emacs配置文件
 ;;; Code:
 
-;; Package Management Setup
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-(package-initialize)
+(defvar emacs-config-dir
+  "~/.emacs.d/"
+  "Path to emacs config directory.")
 
 ;; Custom Reload Function
-(defvar user-init-file "~/.emacs.d/init.el" "Path to user's init file.")
+(defvar user-init-file (concat emacs-config-dir "init.el") "Path to user's init file.")
 
 (defun load-user-init-file ()
   (interactive)
@@ -16,6 +15,23 @@
 
 (global-set-key (kbd "C-c r") 'load-user-init-file)
 
+; ;; Package Management Setup
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
+;; and `package-pinned-packages`. Most users will not need or want to do this.
+;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
+(package-initialize)
+(package-refresh-contents)
+(package-install 'gitconfig-mode)
+
+(require 'gitconfig-mode)
+(add-hook 'git-commit-mode-hook 'gitconfig-mode)
+
+
+
+; load prelude init.el
+; (load (concat emacs-config-dir "prelude/init.el"))
 
 
 ; ;; Basic UI Customizations
