@@ -1,0 +1,16 @@
+[Unit]
+Description=Emacs text editor daemon
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+After=graphical-session.target
+
+[Service]
+Type=notify
+ExecStart=/usr/bin/emacs --fg-daemon
+ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
+Restart=on-failure
+TimeoutStartSec=0
+SuccessExitStatus=15
+
+[Install]
+WantedBy=default.target
+

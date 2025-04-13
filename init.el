@@ -2,36 +2,31 @@
 ;;; Commentary: 福福的emacs配置文件
 ;;; Code:
 
-(defvar emacs-config-dir
-  "~/.emacs.d/"
-  "Path to emacs config directory.")
+; run git submodule update --init --recursive
+(shell-command "git submodule update --init --recursive")
 
-;; Custom Reload Function
-(defvar user-init-file (concat emacs-config-dir "init.el") "Path to user's init file.")
+(load (expand-file-name "prelude/init.el"))
+(load (expand-file-name "path.el"))
+(load (expand-file-name "rc.el"))
 
-(defun load-user-init-file ()
+(defvar dir-prelude
+  (path dir-emacs "prelude")
+  "prelude directory.")
+
+(defvar this-file
+  (path dir-emacs "init.el")
+  "this file.")
+
+(defun load-file-user-init ()
   (interactive)
-  (load-file user-init-file))
+  (load-file this-file))
 
-(global-set-key (kbd "C-c r") 'load-user-init-file)
-
-; ;; Package Management Setup
-(require 'package)
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-;; and `package-pinned-packages`. Most users will not need or want to do this.
-;;(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-(package-initialize)
-(package-refresh-contents)
-(package-install 'gitconfig-mode)
-
-(require 'gitconfig-mode)
-(add-hook 'git-commit-mode-hook 'gitconfig-mode)
+(global-set-key (kbd "C-c r") 'load-file-user-init)
 
 
 
-; load prelude init.el
-; (load (concat emacs-config-dir "prelude/init.el"))
+
+
 
 
 ; ;; Basic UI Customizations
@@ -64,3 +59,15 @@
 ; (custom-set-faces)
 
 
+; (custom-set-variables
+;  ;; custom-set-variables was added by Custom.
+;  ;; If you edit it by hand, you could mess it up, so be careful.
+;  ;; Your init file should contain only one such instance.
+;  ;; If there is more than one, they won't work right.
+;  '(package-selected-packages '(gitconfig-mode git-modes)))
+; (custom-set-faces
+;  ;; custom-set-faces was added by Custom.
+;  ;; If you edit it by hand, you could mess it up, so be careful.
+;  ;; Your init file should contain only one such instance.
+;  ;; If there is more than one, they won't work right.
+;  )
