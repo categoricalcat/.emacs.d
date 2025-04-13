@@ -5,7 +5,7 @@ After=graphical-session.target
 
 [Service]
 Type=notify
-ExecStart=/usr/bin/emacs --fg-daemon
+ExecStart=/usr/bin/emacs --fg-daemon --debug-init --init-directory ~/.emacs.d
 ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
 Restart=on-failure
 TimeoutStartSec=0
