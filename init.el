@@ -1,5 +1,8 @@
 ;;; init.el --- Emacs configuration
-;;; Commentary: 福福的emacs配置文件
+
+;;; Commentary:
+;;; 福福的emacs配置文件
+
 ;;; Code:
 
 ; run git submodule update --init --recursive

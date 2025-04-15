@@ -1,0 +1,3 @@
+name,source,target,description
+emacs.service,$DIR_EMACS/emacs.service,~/.config/systemd/user/emacs.service,"Emacs service"
+prelude-modules,$DIR_EMACS/prelude-modules.el,$DIR_EMACS/prelude/personal/prelude-modules.el,"Prelude modules"

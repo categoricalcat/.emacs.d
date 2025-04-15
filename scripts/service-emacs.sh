@@ -2,6 +2,10 @@
 
 service_dir=~/.config/systemd/user
 
+function show_logs() {
+  journalctl --user-unit emacs.service -n 20 --no-pager
+}
+
 function install_service_emacs() {
   echo "Installing emacs service"
 
@@ -37,8 +41,15 @@ function uninstall_service_emacs() {
   systemctl --user daemon-reload
 }
 
-function restart_service_emacs() {
+function restart_service_emacs_() {
   echo "Restarting emacs service"
   uninstall_service_emacs
   install_service_emacs
+  show_logs
+}
+
+function reload_attach_emacs() {
+  systemctl --user restart emacs.service
+  show_logs
+  emacsclient -c
 }

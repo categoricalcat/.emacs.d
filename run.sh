@@ -10,7 +10,10 @@ function source_all() {
   [[ -f ~/.bash_profile ]] && source ~/.bash_profile
   [[ -f ~/.zsh_profile ]] && source ~/.zsh_profile
 
-  source ~/.emacs.d/scripts/service-emacs.sh
+  for file in ~/.emacs.d/scripts/*.sh; do
+    echo "Sourcing $file"
+    source $file
+  done
 }
 
 source_all
