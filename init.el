@@ -30,7 +30,19 @@
 
 
 
+; ;; Theme Setup
+(load-theme 'leuven-dark t)
 
+
+;; Font and Line Spacing Configuration
+(set-face-attribute 'default nil
+                    :family "Maple Mono NF"
+                    :width 'ultra-condensed)
+
+(setq-default line-spacing 0.0)
+
+(custom-set-variables
+ '(custom-enabled-themes '(leuven-dark)))
 
 
 ; ;; Basic UI Customizations
@@ -44,21 +56,11 @@
 ; (global-visual-line-mode 1)
 ; (setq-default truncate-lines t)
 
-; ;; Theme Setup
-; (load-theme 'leuven-dark t)
+
 ; ;; Mode Line Customization
 ; (add-to-list 'default-frame-alist '(undecorated . t))
 ; (setq frame-title-format "%b")
 
-; ;; Font and Line Spacing Configuration
-; (set-face-attribute 'default nil
-;                     :family "OpenDyslexicMono"
-;                     :width 'ultra-condensed)
-
-; (setq-default line-spacing 0.0)
-
-; (custom-set-variables
-;  '(custom-enabled-themes '(leuven-dark)))
 
 ; (custom-set-faces)
 

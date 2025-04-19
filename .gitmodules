@@ -2,3 +2,5 @@
 path = prelude
 url = https://github.com/bbatsov/prelude.git
 branch = master
+
+# git submodule update --init --recursive --remote
