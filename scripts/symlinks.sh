@@ -1,95 +1,115 @@
 #!/bin/bash
+# This script defines a function that creates symlinks from CSV file rows.
+# The CSV is expected to have a header and four columns:
+# name,source,target,description
 
-# === Configuration ===
-# Specify the input CSV file here or pass it as the first argument
-DEFAULT_CSV_FILE="symlinks.csv"
-INPUT_CSV_FILE="${1:-$DEFAULT_CSV_FILE}"
+# Set default value for DIR_EMACS if not defined
+: "${DIR_EMACS:=$HOME/.emacs.d}"
 
-# === Script Logic ===
+symlink_all() {
+  local csv_file="$1"
 
-function symlink_all() {
-  # Function to display errors and exit
-  error_exit() {
-    echo "Error | $1" >&2
-    exit 1
-  }
-
-  # 1. Check if input CSV file exists and is readable
-  if [ ! -f "$INPUT_CSV_FILE" ]; then
-    error_exit "Input CSV file not found | '$INPUT_CSV_FILE'"
-  fi
-  if [ ! -r "$INPUT_CSV_FILE" ]; then
-    error_exit "Input CSV file not readable | '$INPUT_CSV_FILE'"
+  # Exit immediately if file doesn't exist
+  if [[ ! -f "$csv_file" ]]; then
+    echo "CSV file not found: $csv_file" >&2
+    return 1
   fi
 
-  echo "Starting symlink creation process from '$INPUT_CSV_FILE'..."
-  echo "--------------------------------------------------"
+  local errors_occurred=0
 
-  # 2. Read the CSV file line by line, skipping the header
-  #    Uses tail to skip header, and process substitution with while/read loop
-  #    Sets IFS to comma for parsing. -r prevents backslash interpretation.
-  tail -n +2 "$INPUT_CSV_FILE" | while IFS=, read -r name source target description; do
-    # Trim potential surrounding quotes and whitespace from fields.
-    # This handles the specific format shown where quotes are used for fields with spaces.
-    name=$(echo "$name" | sed -e 's/^[[:space:]"]*//' -e 's/[[:space:]"]*$//')
-    source_path=$(echo "$source_path" | sed "s|\$DIR_EMACS|$DIR_EMACS|g")
-    target_path=$(echo "$target_path" | sed "s|\$DIR_EMACS|$DIR_EMACS|g")
+  # Read CSV file line by line, skipping the header
+  # Using process substitution to avoid subshell issues with return/variable scope
+  while IFS=',' read -r name source target description || [[ -n "$name" ]]; do # Handle last line without newline
+    # Remove surrounding quotes from description if any
+    description="${description//\"/}"
 
-    echo "Processing Entry | '$name'"
+    # Use eval echo for robust tilde and variable expansion
+    src_expanded=$(eval echo "$source")
+    tgt_expanded=$(eval echo "$target")
 
-    # Validate that source and target paths are not empty after trimming
-    if [ -z "$source_path" ] || [ -z "$target_path" ]; then
-      echo "  Skipping '$name' | Source or target path is empty."
-      echo "--------------------------------------------------"
-      continue
-    fi
+    echo "Processing [$name]: $description"
 
-    echo "  Source | '$source_path'"
-    echo "  Target | '$target_path'"
+    # Check if source contains a wildcard "*"
+    if [[ "$source" == *"*"* ]]; then
+      tgt_dir="${tgt_expanded%/*}"
 
-    # 3. Ensure the directory for the target link exists
-    target_dir=$(dirname "$target_path")
-    if [ ! -d "$target_dir" ]; then
-      echo "  Target directory '$target_dir' does not exist. Creating..."
-      mkdir -p "$target_dir"
-      if [ $? -ne 0 ]; then
-        echo "  Error | Failed to create target directory '$target_dir'. Skipping '$name'."
-        echo "--------------------------------------------------"
-        continue
+      # Ensure target directory exists, create if not
+      if [[ ! -d "$tgt_dir" ]]; then
+        echo "Target directory does not exist, creating: $tgt_dir" >&2
+        if ! mkdir -p "$tgt_dir"; then
+          echo "Failed to create target directory: $tgt_dir" >&2
+          errors_occurred=1
+          continue
+        fi
       fi
-      echo "  Target directory created."
-    fi
 
-    # 4. Check if the target path already exists (as file, directory, or link)
-    if [ -e "$target_path" ] || [ -L "$target_path" ]; then
-      echo "  Warning | Target '$target_path' already exists. Removing it first."
-      rm -rf "$target_path" # Use rm -rf cautiously; ensures existing item is removed
-      if [ $? -ne 0 ]; then
-        echo "  Error | Failed to remove existing target '$target_path'. Skipping '$name'."
-        echo "--------------------------------------------------"
-        continue
+      echo "Creating symlinks for items matching [$src_expanded] in directory [$tgt_dir]"
+
+      # Use nullglob and loop for safer wildcard expansion
+      local file_found=0
+      shopt -s nullglob             # Make globs expand to nothing if no match
+      for file in $src_expanded; do # Intentionally unquoted to allow glob expansion
+        file_found=1
+        if [[ ! -e "$file" ]]; then
+          # This check might be redundant with nullglob but kept for clarity
+          echo "Source file/directory not found: $file" >&2
+          errors_occurred=1
+          continue
+        fi
+
+        base=$(basename "$file")
+        target_link="$tgt_dir/$base"
+
+        # Create/update the target symlink, force overwrite
+        echo "Linking [$file] -> [$target_link]"
+        if ln -svf "$file" "$target_link"; then
+          echo "Symlink created/updated successfully"
+        else
+          echo "Failed to create symlink from [$file] to [$target_link]" >&2
+          errors_occurred=1
+        fi
+      done
+      shopt -u nullglob # Disable nullglob
+
+      if [[ $file_found -eq 0 ]]; then
+        echo "Warning: No files found matching source pattern: $src_expanded" >&2
       fi
-      echo "  Existing target removed."
-    fi
 
-    # 5. Create the symbolic link
-    echo "  Creating symlink | '$name'"
-    ln -sfv "$source_path" "$target_path"
-
-    # 6. Verify link creation and report status
-    if [ $? -eq 0 ]; then
-      echo "  Success | Symlink created for '$name'."
     else
-      echo "  Error | Failed to create symlink for '$name'. Check permissions or if source exists."
-      # Add a check if the source exists for better error diagnosis
-      if [ ! -e "$source_path" ] && [ ! -L "$source_path" ]; then
-        echo "  Diagnosis | Source '$source_path' does not seem to exist."
+      # Standard case: create a single symlink
+
+      # Ensure parent directory of target exists
+      tgt_dir=$(dirname "$tgt_expanded")
+      if [[ ! -d "$tgt_dir" ]]; then
+        echo "Target directory does not exist, creating: $tgt_dir" >&2
+        if ! mkdir -p "$tgt_dir"; then
+          echo "Failed to create target directory: $tgt_dir" >&2
+          errors_occurred=1
+          continue
+        fi
+      fi
+
+      # Check if source exists
+      if [[ ! -e "$src_expanded" ]]; then
+        echo "Source does not exist: $src_expanded" >&2
+        errors_occurred=1
+        continue
+      fi
+
+      # Create/update the target symlink, force overwrite
+      echo "Linking [$src_expanded] -> [$tgt_expanded]"
+      if ln -svf "$src_expanded" "$tgt_expanded"; then
+        echo "Symlink created/updated successfully"
+      else
+        echo "Failed to create symlink from [$src_expanded] to [$tgt_expanded]" >&2
+        errors_occurred=1
       fi
     fi
-    echo "--------------------------------------------------"
 
-  done
+  done < <(tail -n +2 "$csv_file") # Use process substitution here
 
-  echo "Symlink creation process finished."
-  exit 0
+  return $errors_occurred
 }
+
+# Remove the export -f line
+# The function is available because the script is sourced by run.sh
