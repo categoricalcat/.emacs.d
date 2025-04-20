@@ -1,3 +1,35 @@
+# My Emacs Configuration (福福的emacs配置文件)
+
+This configuration is based on [Emacs Prelude](https://github.com/bbatsov/prelude) with personal customizations.
+
+## Overview
+
+*   **Base:** Emacs Prelude
+*   **Completion:** Helm
+*   **Theme:** `leuven-dark`
+*   **Font:** `Maple Mono NF` (ultra-condensed)
+*   **Keybinding:** `C-c r` reloads the init file (`~/.emacs.d/init.el`).
+
+## Structure
+
+*   `init.el`: Main entry point, loads Prelude, custom files, and sets basic theme/font.
+*   `rc.el`: Contains custom functions and package requirements (e.g., `rc/require 'helm`).
+*   `path.el`: Defines relevant directory paths.
+*   `prelude/`: The core Emacs Prelude distribution (managed as a git submodule).
+*   `elpa/`: Installed packages.
+
+## Installation
+
+After cloning this repository, initialize the Prelude submodule:
+
+```bash
+git submodule update --init --recursive
+```
+
+---
+
+*The following sections provide general information about Emacs configuration concepts.*
+
 # Emacs Initialization
 
 Emacs reads configuration instructions from an initialization file on startup. This file dictates its behavior, appearance, and loaded packages.
