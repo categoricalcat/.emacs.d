@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 # This script defines a function that creates symlinks from CSV file rows.
 # The CSV is expected to have a header and four columns:
 # name,source,target,description
@@ -31,7 +31,8 @@ symlink_all() {
 
     # Check if source contains a wildcard "*"
     if [[ "$source" == *"*"* ]]; then
-      tgt_dir="${tgt_expanded%/*}"
+      # For wildcard sources, the target is the directory itself
+      tgt_dir="$tgt_expanded"
 
       # Ensure target directory exists, create if not
       if [[ ! -d "$tgt_dir" ]]; then
@@ -45,14 +46,25 @@ symlink_all() {
 
       echo "Creating symlinks for items matching [$src_expanded] in directory [$tgt_dir]"
 
-      # Use nullglob and loop for safer wildcard expansion
+      # Use nullglob and loop safely over potentially multiple sources
       local file_found=0
-      shopt -s nullglob             # Make globs expand to nothing if no match
-      for file in $src_expanded; do # Intentionally unquoted to allow glob expansion
+      setopt nullglob               # Make globs expand to nothing if no match
+      # Split the expanded source string into an array using spaces as delimiters
+      local files_to_link=("${(@s: :)src_expanded}")
+
+      for file in "${files_to_link[@]}"; do # Iterate over array elements
         file_found=1
+        # Trim potential leading/trailing whitespace from element
+        file="${file## ##}"
+        file="${file%% ##}"
+        if [[ -z "$file" ]]; then # Skip empty elements resulting from split
+          continue
+        fi
+
         if [[ ! -e "$file" ]]; then
-          # This check might be redundant with nullglob but kept for clarity
-          echo "Source file/directory not found: $file" >&2
+          # This check is important as glob expansion might yield non-existent paths
+          # if the source pattern included relative paths or complex patterns evaluated by eval.
+          echo "Source file/directory not found: [$file]" >&2 # Add brackets for clarity
           errors_occurred=1
           continue
         fi
@@ -69,7 +81,7 @@ symlink_all() {
           errors_occurred=1
         fi
       done
-      shopt -u nullglob # Disable nullglob
+      unsetopt nullglob # Disable nullglob
 
       if [[ $file_found -eq 0 ]]; then
         echo "Warning: No files found matching source pattern: $src_expanded" >&2

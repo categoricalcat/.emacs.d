@@ -12,7 +12,6 @@
 (load (expand-file-name "rc.el" dir-emacs))
 (load (expand-file-name "prelude/init.el" dir-emacs))
 
-
 (defvar dir-prelude
   (path dir-emacs "prelude")
   "prelude directory.")
