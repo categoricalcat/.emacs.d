@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/.emacs.d/prelude/")
+("~/Documents/GitHub/.emacs.d/prelude/" "~/.emacs.d/" "~/.emacs.d/prelude/")

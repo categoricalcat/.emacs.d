@@ -10,7 +10,8 @@
 
 (load (expand-file-name "path.el" "~/.emacs.d"))
 (load (expand-file-name "rc.el" dir-emacs))
-(load (expand-file-name "prelude/init.el" dir-emacs))
+
+(rc/require 'helm)
 
 (defvar dir-prelude
   (path dir-emacs "prelude")
@@ -27,11 +28,11 @@
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
 
+;; prelude
+(load (expand-file-name "prelude/init.el" dir-emacs))
 
-
-; ;; Theme Setup
+;; Theme Setup
 (load-theme 'leuven-dark t)
-
 
 ;; Font and Line Spacing Configuration
 (set-face-attribute 'default nil
@@ -42,6 +43,9 @@
 
 (custom-set-variables
  '(custom-enabled-themes '(leuven-dark)))
+
+
+
 
 
 ; ;; Basic UI Customizations
