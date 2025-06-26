@@ -36,7 +36,7 @@
 
 ;; Font and Line Spacing Configuration
 (set-face-attribute 'default nil
-                    :family "Maple Mono NF"
+                    :family "Maple Mono NF CN"
                     :width 'ultra-condensed)
 
 (setq-default line-spacing 0.0)
