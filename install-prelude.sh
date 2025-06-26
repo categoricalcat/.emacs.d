@@ -7,3 +7,5 @@ curl -L -o installer.sh https://github.com/bbatsov/prelude/raw/master/utils/inst
 chmod +x installer.sh
 
 ./installer.sh -d prelude --verbose
+
+./run.sh symlink_all symlinks.csv
