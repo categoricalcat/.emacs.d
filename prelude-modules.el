@@ -2,7 +2,7 @@
 
 ;;; General productivity tools
 
-(require 'prelude-ido) ;; Supercharges Emacs completion for C-x C-f and more
+;; (require 'prelude-ido) ;; Supercharges Emacs completion for C-x C-f and more
 ;; (require 'prelude-ivy) ;; A mighty modern alternative to ido
 (require 'prelude-vertico) ;; A powerful, yet simple, alternative to ivy
 (require 'prelude-helm) ;; Interface for narrowing and search
@@ -57,4 +57,4 @@
 (require 'prelude-yaml)
 
 ;;; Misc
-(require 'prelude-erc) ;; A popular Emacs IRC client (useful if you're still into Freenode)
+; (require 'prelude-erc) ;; A popular Emacs IRC client (useful if you're still into Freenode)
