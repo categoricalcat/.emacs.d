@@ -1,3 +1,11 @@
+(require 'package)
+(add-to-list 'package-archives
+             '("melpa" . "https://melpa.org/packages/") t)
+;; Optionally also NonGNU ELPA:
+(add-to-list 'package-archives
+             '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
+(package-initialize)
+
 (defvar rc/package-contents-refreshed nil)
 
 (defun rc/package-refresh-contents-once ()
