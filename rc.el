@@ -1,6 +1,3 @@
-(add-to-list 'package-archives
-             '("nongnu" . "https://elpa.nongnu.org/nongnu/") t)
-
 (defvar rc/package-contents-refreshed nil)
 
 (defun rc/package-refresh-contents-once ()

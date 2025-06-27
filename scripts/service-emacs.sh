@@ -2,20 +2,24 @@
 
 service_dir=~/.config/systemd/user
 
-function install_service_emacs() {
-  echo "Installing emacs service"
+function start_daemon() {
+  echo "Starting emacs service"
 
   emacs --daemon --debug-init
 }
 
-function uninstall_service_emacs() {
-  echo "Uninstalling emacs service"
+function stop_daemon() {
+  echo "Stopping emacs service"
 
   emacsclient --eval '(kill-emacs)'
 }
 
-function reload_attach_emacs() {
-  emacsclient --eval '(kill-emacs)'
-  emacs --daemon --debug-init
+function attach_daemon() {
   emacsclient -c
+}
+
+function reload_attach_daemon() {
+  stop_daemon
+  start_daemon
+  attach_daemon
 }
