@@ -15,21 +15,20 @@
 
 (defvar dir-prelude
   (path dir-emacs "prelude")
-  "prelude directory.")
+  "Prelude directory.")
 
 (defvar this-file
   (path dir-emacs "init.el")
-  "this file.")
+  "This file.")
 
 (defun load-file-user-init ()
   (interactive)
   (load-file this-file))
 
-(global-set-key (kbd "C-c r") 'load-file-user-init)
-
+; (global-set-key (kbd "C-c r") 'load-file-user-init)
 
 ;; prelude
-(load (expand-file-name "prelude/init.el" dir-emacs))
+(load (expand-file-name "init.el" dir-prelude))
 
 ;; Theme Setup
 (load-theme 'leuven-dark t)
@@ -44,6 +43,9 @@
 (custom-set-variables
  '(custom-enabled-themes '(leuven-dark)))
 
+;; windows size
+(setq initial-frame-alist '((width . 130) (height . 40)))
+(setq default-frame-alist '((width . 130) (height . 30)))
 
 
 
