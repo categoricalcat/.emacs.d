@@ -47,7 +47,9 @@
 (setq initial-frame-alist '((width . 130) (height . 40)))
 (setq default-frame-alist '((width . 130) (height . 30)))
 
-
+;; elcord mode
+(rc/require 'elcord)
+(elcord-mode)
 
 
 ; ;; Basic UI Customizations

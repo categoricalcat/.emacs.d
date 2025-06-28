@@ -1,1 +1,0 @@
-("~/frontend/" "~/.emacs.d/" "~/.emacs.d/prelude/" "~/Documents/GitHub/dipsik/" "~/Documents/GitHub/.emacs.d/" "~/Documents/GitHub/.emacs.d/prelude/")
