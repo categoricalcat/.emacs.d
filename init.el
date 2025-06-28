@@ -9,12 +9,15 @@
 (shell-command "git submodule update --init --recursive")
 
 (load (expand-file-name "path.el" "~/.emacs.d"))
-(load (expand-file-name "rc.el" dir-emacs))
+(load (expand-file-name "rc.el" path-emacs))
+
+(require 'path)
+
 
 (rc/require 'helm)
 
 (defvar dir-prelude
-  (path dir-emacs "prelude")
+  (path-resolve path-emacs "prelude")
   "Prelude directory.")
 
 (defvar this-file
