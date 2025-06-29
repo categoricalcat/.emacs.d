@@ -13,3 +13,5 @@ org-persist
 installer.sh
 tutorial/
 projectile-bookmarks.eld
+.emacs.desktop
+.emacs.desktop.lock

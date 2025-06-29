@@ -1,4 +1,4 @@
-;;; init.el --- Emacs configuration
+;;; init.el --- Emacs configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 ;;; 福福的emacs配置文件
@@ -8,10 +8,22 @@
 ; run git submodule update --init --recursive
 (shell-command "git submodule update --init --recursive")
 
-(load (expand-file-name "path.el" "~/.emacs.d"))
-(load (expand-file-name "rc.el" path-emacs))
+(require 'package)
+(setq package-archives
+  '(("melpa" . "https://melpa.org/packages/")
+     ("gnu"   . "https://elpa.gnu.org/packages/")))
+(package-initialize)
 
+(load (expand-file-name "init.el" "./prelude"))
+
+;; Add custom lisp path at compile and run time
+(eval-and-compile
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
+
+;; Load custom path helpers
 (require 'path)
+
+(load (expand-file-name "rc.el" path-lisp))
 
 (defvar dir-prelude
   (path-resolve path-emacs "prelude")
@@ -22,13 +34,13 @@
   "This file.")
 
 (defun load-file-user-init ()
+  "Reload this Emacs initialization file."
   (interactive)
   (load-file this-file))
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
 ;; prelude
-(load (expand-file-name "init.el" dir-prelude))
 
 ;; Theme Setup
 (load-theme 'leuven-dark t)
