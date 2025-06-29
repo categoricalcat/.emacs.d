@@ -13,22 +13,19 @@
 
 (require 'path)
 
-
-(rc/require 'helm)
-
 (defvar dir-prelude
   (path-resolve path-emacs "prelude")
   "Prelude directory.")
 
 (defvar this-file
-  (path dir-emacs "init.el")
+  (path-resolve path-emacs "init.el")
   "This file.")
 
 (defun load-file-user-init ()
   (interactive)
   (load-file this-file))
 
-; (global-set-key (kbd "C-c r") 'load-file-user-init)
+(global-set-key (kbd "C-c r") 'load-file-user-init)
 
 ;; prelude
 (load (expand-file-name "init.el" dir-prelude))
@@ -87,5 +84,6 @@
 ;  ;; Your init file should contain only one such instance.
 ;  ;; If there is more than one, they won't work right.
                                         ;  )
+
 
 ;;; init.el ends here

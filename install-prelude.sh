@@ -1,11 +1,16 @@
 #!/bin/bash
 
+./run.sh stop_daemon
+
 rm -rf prelude
 
-curl -L -o installer.sh https://github.com/bbatsov/prelude/raw/master/utils/installer.sh
+if [ ! -f installer.sh ]; then
+    curl -L -o installer.sh https://github.com/bbatsov/prelude/raw/master/utils/installer.sh
+    chmod +x installer.sh
+fi
 
-chmod +x installer.sh
-
-./installer.sh -d prelude --verbose
+./installer.sh -d prelude # --verbose
 
 ./run.sh symlink_all symlinks.csv
+
+./run.sh start_daemon

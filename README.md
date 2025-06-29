@@ -1,125 +1,131 @@
-# My Emacs Configuration (福福的emacs配置文件)
+# 福福的emacs配置文件
+<small>_lucky emacs configuration_</small>
 
-This configuration is based on [Emacs Prelude](https://github.com/bbatsov/prelude) with personal customizations.
+## What is this?
 
-## Overview
+This is my emacs configuration
 
-- **Base:** Emacs Prelude
-- **Completion:** Helm
-- **Theme:** `leuven-dark`
-- **Font:** `Maple Mono NF` (ultra-condensed)
-- **Keybinding:** `C-c r` reloads the init file (`~/.emacs.d/init.el`).
+## Features
 
-## Structure
+- Based on [Prelude](https://github.com/bbatsov/prelude) (syntax, packages, sensible defaults).
+- **Helm** completion everywhere.
+- Theme: **`leuven-dark`**.
+- Font: **`Maple Mono NF CN`** ultra-condensed (ideal for CJK).
+- Key-binding **`C-c r`** reloads the whole config in-place.
+- OS specific tweaks for **macOS Sonoma** (24.x Darwin kernel).
+- Extra helpers in `rc.el` (package bootstrap, window layout, etc.).
+- Systemd / `launchctl` ready service files to run Emacs daemon.
+- Scripted installer & symlink manager for dot-files.
 
-- `init.el`: Main entry point, loads Prelude, custom files, and sets basic theme/font.
-- `rc.el`: Contains custom functions and package requirements (e.g., `rc/require 'helm`).
-- `path.el`: Defines relevant directory paths.
-- `prelude/`: The core Emacs Prelude distribution (managed as a git submodule).
-- `elpa/`: Installed packages.
+## Repository Layout
 
-## Prerequisites
+```
+.emacs.d/
+ ├ docs/                 → Misc docs & blog posts
+ ├ init.el               → Entry point – loads Prelude & personal code
+ ├ rc.el                 → Custom helper functions & package setup
+ ├ path.el               → Path helpers (XDG, cache dirs, etc.)
+ ├ treemacs-config.el    → Treemacs face tweaks
+ ├ prelude/              → **Git submodule** with upstream Prelude
+ ├ prelude-modules.el    → List of Prelude modules to enable
+ ├ scripts/              → Various shell helpers (see below)
+ │   ├ service-emacs.sh  → Wrapper to start/stop Emacs server
+ │   └ symlinks.sh       → Declarative dot-file linker (reads symlinks.csv)
+ ├ symlinks.csv          → `<abs-src>,<abs-dst>` tuples for scripts/symlinks.sh
+ └ docs/, vendor/, etc.
+```
 
-- Git (for managing submodules)
-- Emacs 28 or later (recommended)
+Feel free to browse – files are short & documented.
 
 ## Installation
 
-Clone this repository and initialize the submodules:
+### 1. Prerequisites
+
+- built on **Emacs 30.1**.
+- **Git** + `submodule` support.
+
+### 2. Clone & bootstrap
 
 ```bash
-git clone <your-repo-url> ~/.emacs.d
-cd ~/.emacs.d
-git submodule update --init --recursive
+# clone into the canonical location so Emacs picks it up automatically
+$ git clone https://github.com/<your-fork>/emacs.d ~/.emacs.d
+$ cd ~/.emacs.d
+
+# grab Prelude sub-module & other deps
+$ ./install-prelude.sh         # ⇢ runs `git submodule update --init --recursive`
+
+# optional – create all declared dot-file symlinks
+$ ./scripts/symlinks.sh        # reads symlinks.csv
 ```
 
-## Recommended Additional Packages
+That's it – start Emacs and enjoy.
 
-Consider installing these popular packages for enhanced functionality:
-- `magit`: Powerful Git integration
-- `org`: Extensive organizational and note-taking tool
-- `company`: Modular text completion framework
+## Every-day Usage
+
+| Task                     | Key / Command            |
+|--------------------------|--------------------------|
+| Reload config            | `C-c r`                  |
+| Find file (Helm)         | `C-x C-f`                |
+| Switch buffer            | `C-x b`                  |
+| Magit status             | `C-x g` (if magit)       |
+| Describe key             | `C-h k`                  |
+| Package refresh          | `M-x package-refresh-contents` |
+
+Most Prelude goodies apply – see its README for full cheatsheet.
+
+## Updating
+
+Prelude and this config evolve. To update **both**:
+
+```bash
+cd ~/.emacs.d
+# pull personal config
+git pull
+
+# pull upstream Prelude into the submodule
+git submodule update --remote --merge
+
+# finally re-compile every *.el (optional but keeps things snappy)
+emacs --batch -l ~/.emacs.d/init.el -f batch-byte-compile ~/.emacs.d/**/*.el
+```
+
+## Running Emacs as a Service
+
+### macOS (launchctl)
+
+```bash
+ln -sf ~/.emacs.d/emacs.service ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/emacs.service
+```
+
+### systemd (Linux)
+
+```bash
+systemctl --user enable ~/.emacs.d/emacs.service
+systemctl --user start  emacs
+```
+
+Afterwards start GUI/TTY frames with `emacsclient -c` or `-t`.
+
+Scripts under `scripts/service-emacs.sh` wrap common operations.
 
 ## Troubleshooting
 
-- **Package issues:** If packages fail to install or load, refresh your package contents by running `M-x package-refresh-contents`.
-- **Theme issues:** If the theme doesn't load, ensure it's installed with `M-x list-packages` or `M-x package-install`.
+- If packages fail to install, run `M-x package-refresh-contents`.
+- Delete the `elpa/` dir to force a clean reinstall.
+- Invoke Emacs with `--debug-init` to pinpoint startup errors.
+- Still stuck? – Check `*Messages*` buffer and the issue tracker.
 
-## Quick Reference
+## Contributing
 
-| Command             | Keybinding          | Description                         |
-|---------------------|---------------------|-------------------------------------|
-| Reload init file    | `C-c r`             | Reload your Emacs configuration     |
-| Find file           | `C-x C-f`           | Open a file                         |
-| Save buffer         | `C-x C-s`           | Save changes                        |
-| Quit Emacs          | `C-x C-c`           | Exit Emacs                          |
-| List buffers        | `C-x C-b`           | Show all open buffers               |
-| Switch buffer       | `C-x b`             | Switch to another buffer            |
-| Helm completion     | (various commands)  | Enhanced completion interface       |
-
-## Customizing Your Environment
-
-### Changing Theme
-
-To try a new theme interactively:
-- Run `M-x customize-themes` and select your preferred theme.
-
-To permanently set a theme, add to your `init.el`:
-
-```elisp
-(load-theme 'your-theme-name t)
-```
-
-### Changing Font
-
-Change your default font by editing the `rc.el` or adding the following line to your `init.el`:
-
-```elisp
-(add-to-list 'default-frame-alist '(font . "Your Preferred Font-Size"))
-```
-
-## Emacs Initialization
-
-Emacs reads configuration instructions from an initialization file (`init.el`) located typically at `~/.emacs.d/init.el`. If it doesn't exist, create it with:
-
-```bash
-mkdir ~/.emacs.d
-touch ~/.emacs.d/init.el
-```
-
-You can organize your configuration by splitting it into multiple `.el` files and loading them from your `init.el`:
-
-```elisp
-(load-file (expand-file-name "my-settings.el" user-emacs-directory))
-```
-
-## Essential Commands
-
-- `C-p`: Move cursor up one line
-- `C-n`: Move cursor down one line
-- `C-a`: Move cursor to the beginning of the line
-- `C-e`: Move cursor to the end of the line
-- `M-x`: Execute command by name
-- `C-g`: Quit/cancel current operation or minibuffer prompt
-
-## Running Emacs as a Daemon (Server)
-
-For faster startup times, run Emacs as a daemon:
-
-```bash
-emacs --daemon
-```
-
-Then use `emacsclient` to connect quickly:
-
-```bash
-emacsclient -c  # graphical
-emacsclient -t  # terminal
-```
+Make an issue? idk
 
 ## References
 
-- [Emacs Official Documentation](https://www.gnu.org/software/emacs/manual/)
-- [Emacs Prelude GitHub](https://github.com/bbatsov/prelude)
-- [Helm Documentation](https://emacs-helm.github.io/helm/)
+- [Emacs Manual](https://www.gnu.org/software/emacs/manual/)
+- [Prelude docs](https://github.com/bbatsov/prelude#readme)
+- [Helm project](https://github.com/emacs-helm/helm)
+- [Maple Mono Nerd Font](https://github.com/subframe7536/maple-font)
+- My notes: see `docs/` directory inside this repo.
 
+---
