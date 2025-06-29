@@ -51,18 +51,24 @@
 (rc/require 'elcord)
 (elcord-mode)
 
+;; super save mode
+(desktop-save-mode 1)
+(super-save-mode +1)
+
 
 ; ;; Basic UI Customizations
 ; (menu-bar-mode 0)
-; (tool-bar-mode 0)
-; (scroll-bar-mode 0)
-; (column-number-mode 1)
-; (global-display-line-numbers-mode 1)
-; (display-time-mode 1)
-; (setq inhibit-startup-message t)
-; (global-visual-line-mode 1)
-; (setq-default truncate-lines t)
-
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(column-number-mode 1)
+(global-display-line-numbers-mode 1)
+(display-time-mode 1)
+(global-visual-line-mode 1)
+(setq-default truncate-lines t)
+(setq inhibit-startup-message t)
+(setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
+(setq initial-major-mode 'eshell-mode)
+; (setq-default major-mode 'eshell-mode)
 
 ; ;; Mode Line Customization
 ; (add-to-list 'default-frame-alist '(undecorated . t))
