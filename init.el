@@ -10,6 +10,12 @@
 
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
 
+(require 'server)
+(setq server-host "0.0.0.0")
+(setq server-port 13245)
+(setq server-use-tcp t)
+(server-start)
+
 ;; Add custom lisp path at compile and run time
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
