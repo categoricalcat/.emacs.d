@@ -8,13 +8,7 @@
 ; run git submodule update --init --recursive
 (shell-command "git submodule update --init --recursive")
 
-(require 'package)
-(setq package-archives
-  '(("melpa" . "https://melpa.org/packages/")
-     ("gnu"   . "https://elpa.gnu.org/packages/")))
-(package-initialize)
-
-(load (expand-file-name "init.el" "./prelude"))
+(load (expand-file-name "prelude/init.el" user-emacs-directory))
 
 ;; Add custom lisp path at compile and run time
 (eval-and-compile

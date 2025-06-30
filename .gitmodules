@@ -1,6 +1,6 @@
 [submodule "prelude"]
 path = prelude
-url = https://github.com/bbatsov/prelude.git
-branch = master
+url = git@github.com:categoricalcat/prelude.git
+branch = fufu-peizhi
 
 # git submodule update --init --recursive --remote
