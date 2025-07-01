@@ -5,9 +5,8 @@
 
 ;;; Code:
 
-; run git submodule update --init --recursive
+;; git submodule update --init --recursive
 (shell-command "git submodule update --init --recursive")
-
 
 ;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
@@ -20,6 +19,7 @@
 (require 'server)
 (require 'rc)
 (require 'path)
+(require 'treemacs-config)
 
 ;; windows size
 (setq initial-frame-alist '((width . 130) (height . 40)))
@@ -45,14 +45,6 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-;; Theme Setup
-(load-theme 'leuven-dark t)
-
-;; Font and Line Spacing Configuration
-(set-face-attribute 'default nil
-                    :family "Maple Mono NF CN"
-                    :width 'ultra-condensed)
-
 (custom-set-variables
  '(custom-enabled-themes '(leuven-dark)))
 
@@ -68,6 +60,11 @@
 (server-start)
 
 ;; UI
+(custom-set-faces)
+(load-theme 'leuven-dark t)
+(set-face-attribute 'default nil
+                    :family "Maple Mono NF CN"
+                    :width 'ultra-condensed)
 ; (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -77,28 +74,14 @@
 (global-visual-line-mode 1)
 (setq-default truncate-lines t)
 (setq inhibit-startup-message t)
-(setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
 (setq initial-major-mode 'eshell-mode)
+; (setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
 ; (setq-default major-mode 'eshell-mode)
 
 ; ;; Mode Line Customization
 ; (add-to-list 'default-frame-alist '(undecorated . t))
-; (setq frame-title-format "%b")
+(setq frame-title-format "%m ◼ femacs :3 ◼ %b")
 
+;; set frame title
 
-; (custom-set-faces)
-
-
-; (custom-set-variables
-;  ;; custom-set-variables was added by Custom.
-;  ;; If you edit it by hand, you could mess it up, so be careful.
-;  ;; Your init file should contain only one such instance.
-;  ;; If there is more than one, they won't work right.
-;  '(package-selected-packages '(gitconfig-mode git-modes)))
-; (custom-set-faces
-;  ;; custom-set-faces was added by Custom.
-;  ;; If you edit it by hand, you could mess it up, so be careful.
-;  ;; Your init file should contain only one such instance.
-;  ;; If there is more than one, they won't work right.
-                                        ;  )
 ;;; init.el ends here
