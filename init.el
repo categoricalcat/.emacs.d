@@ -8,23 +8,28 @@
 ; run git submodule update --init --recursive
 (shell-command "git submodule update --init --recursive")
 
+
+;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
 
-(require 'server)
-(setq server-host "0.0.0.0")
-(setq server-port 13245)
-(setq server-use-tcp t)
-(server-start)
-
-;; Add custom lisp path at compile and run time
+;; Add the lisp directory to the load path
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
 
-;; Load custom path helpers
+;; Them requires
+(require 'server)
+(require 'rc)
 (require 'path)
 
-(load (expand-file-name "rc.el" path-lisp))
+;; windows size
+(setq initial-frame-alist '((width . 130) (height . 40)))
+(setq default-frame-alist '((width . 130) (height . 30)))
+(setq server-port 13245)
+(setq server-use-tcp t)
+(setq server-host "0.0.0.0")
+(setq-default line-spacing 0.0)
 
+;; Definitions
 (defvar dir-prelude
   (path-resolve path-emacs "prelude")
   "Prelude directory.")
@@ -40,8 +45,6 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-;; prelude
-
 ;; Theme Setup
 (load-theme 'leuven-dark t)
 
@@ -50,25 +53,21 @@
                     :family "Maple Mono NF CN"
                     :width 'ultra-condensed)
 
-(setq-default line-spacing 0.0)
-
 (custom-set-variables
  '(custom-enabled-themes '(leuven-dark)))
 
-;; windows size
-(setq initial-frame-alist '((width . 130) (height . 40)))
-(setq default-frame-alist '((width . 130) (height . 30)))
-
-;; elcord mode
 (rc/require 'elcord)
 (elcord-mode)
 
-;; super save mode
 (desktop-save-mode 1)
 (super-save-mode +1)
 
+(rc/require 'golden-ratio)
+(golden-ratio-mode 1)
 
-; ;; Basic UI Customizations
+(server-start)
+
+;; UI
 ; (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
@@ -102,6 +101,4 @@
 ;  ;; Your init file should contain only one such instance.
 ;  ;; If there is more than one, they won't work right.
                                         ;  )
-
-
 ;;; init.el ends here

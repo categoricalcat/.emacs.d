@@ -1,3 +1,10 @@
+;;; rc.el --- Emacs configuration -*- lexical-binding: t; -*-
+
+;;; Commentary:
+;;; for requiring?
+
+;;; Code:
+
 (defvar rc/package-contents-refreshed nil)
 
 (defun rc/package-refresh-contents-once ()
@@ -19,8 +26,11 @@
     (rc/require-package package)))
 
 (defun rc/require-theme (theme)
-  "Ensure THEME's package is installed and load the theme."
+  "Ensure THEME package is installed and load the theme."
   (let ((theme-package (intern (concat (symbol-name theme) "-theme"))))
     (rc/require-package theme-package)
     (load-theme theme t)))
 
+(provide 'rc)
+
+;;; rc.el ends here

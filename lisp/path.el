@@ -18,7 +18,7 @@
 
 (defconst path-lisp
   (path-resolve path-emacs "lisp")
-  "Emacs lisp directory.")
+  "Emacs Lisp directory.")
 
 (provide 'path)
 
