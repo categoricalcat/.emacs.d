@@ -20,10 +20,11 @@
 (require 'rc)
 (require 'path)
 (require 'treemacs-config)
+(require 'desktop)
 
 ;; windows size
-(setq initial-frame-alist '((width . 130) (height . 40)))
-(setq default-frame-alist '((width . 130) (height . 30)))
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq server-port 13245)
 (setq server-use-tcp t)
 (setq server-host "0.0.0.0")
@@ -51,6 +52,9 @@
 (rc/require 'elcord)
 (elcord-mode)
 
+(setq desktop-dirname             "~/.emacs.d/desktop/"
+      desktop-base-file-name      "emacs-desktop"
+      desktop-load-locked-desktop nil)
 (desktop-save-mode 1)
 (super-save-mode +1)
 
@@ -74,14 +78,21 @@
 (global-visual-line-mode 1)
 (setq-default truncate-lines t)
 (setq inhibit-startup-message t)
-(setq initial-major-mode 'eshell-mode)
-; (setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
-; (setq-default major-mode 'eshell-mode)
+;; (setq initial-major-mode 'eshell-mode)
+;; (setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
+;; (setq-default major-mode 'eshell-mode)
 
 ; ;; Mode Line Customization
 ; (add-to-list 'default-frame-alist '(undecorated . t))
-(setq frame-title-format "%m ◼ femacs :3 ◼ %b")
+(setq frame-title-format "%m 🩵🩷🤍 %b")
 
-;; set frame title
+(add-hook 'emacs-startup-hook
+          (lambda ()
+            ;; Ensure we're starting from a single window
+            (delete-other-windows)
+            (treemacs)
+            (other-window 1)
+            (split-window-below)
+            ))
 
 ;;; init.el ends here
