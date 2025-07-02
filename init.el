@@ -86,7 +86,7 @@
 ; (add-to-list 'default-frame-alist '(undecorated . t))
 (setq frame-title-format "%m 🩵🩷🤍 %b")
 
-(add-hook 'emacs-startup-hook
+(add-hook 'server-after-make-frame-hook
           (lambda ()
             ;; Ensure we're starting from a single window
             (delete-other-windows)

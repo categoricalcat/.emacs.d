@@ -12,7 +12,7 @@ if [[ -f ~/Library/LaunchAgents/org.gnu.emacs.daemon.plist ]]; then
 fi
 
 echo "Copying Emacs daemon plist"
-cp org.gnu.emacs.daemon.plist ~/Library/LaunchAgents/
+cp ~/.emacs.d/services/org.gnu.emacs.daemon.plist ~/Library/LaunchAgents/
 
 echo "Loading Emacs daemon"
 launchctl load ~/Library/LaunchAgents/org.gnu.emacs.daemon.plist

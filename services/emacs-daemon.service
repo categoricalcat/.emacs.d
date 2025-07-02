@@ -1,5 +1,5 @@
 [Unit]
-Description=Emacs daemon
+Description=Femacs daemon
 Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
 After=graphical-session.target
 
@@ -7,12 +7,12 @@ After=graphical-session.target
 Type=notify
 User=%i
 WorkingDirectory=%h
-ExecStart=/usr/bin/emacs --fg-daemon
+ExecStart=/usr/bin/emacs --fg-daemon --debug-init --init-directory ~/.emacs.d
 ExecStop=/usr/bin/emacsclient --eval "(kill-emacs)"
-Environment=SSH_AUTH_SOCK=%t/keyring/ssh
 Restart=on-failure
 TimeoutStartSec=0
 SuccessExitStatus=15
 
 [Install]
 WantedBy=default.target
+
