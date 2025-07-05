@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/bin/zsh
 
 ./run.sh stop_daemon
 
+echo "[femacs] removing prelude"
 rm -rf prelude
 
-if [ ! -f installer.sh ]; then
-    curl -L -o installer.sh https://github.com/bbatsov/prelude/raw/master/utils/installer.sh
-    chmod +x installer.sh
-fi
+echo "[femacs] updating submodules"
+git submodule update --init --recursive --remote
 
-./installer.sh -d prelude # --verbose
-
+echo "[femacs] symlinking all"
 ./run.sh symlink_all symlinks.csv
 
+echo "[femacs] starting daemon"
 ./run.sh start_daemon
+
+echo "[femacs] done"

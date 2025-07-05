@@ -46,6 +46,7 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
+(rc/require 'leuven-theme)
 (custom-set-variables
  '(custom-enabled-themes '(leuven-dark)))
 
