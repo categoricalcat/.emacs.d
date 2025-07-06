@@ -16,18 +16,15 @@
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
 
 ;; Them requires
-(require 'server)
 (require 'rc)
 (require 'path)
 (require 'treemacs-config)
 (require 'desktop)
+(require 'femacs-server)
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-(setq server-port 13245)
-(setq server-use-tcp t)
-(setq server-host "0.0.0.0")
 (setq-default line-spacing 0.0)
 
 ;; Definitions
@@ -61,8 +58,6 @@
 
 (rc/require 'golden-ratio)
 (golden-ratio-mode 1)
-
-(server-start)
 
 ;; UI
 (custom-set-faces)
