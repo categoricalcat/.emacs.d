@@ -12,7 +12,6 @@ This is my emacs configuration
 - Theme: **`leuven-dark`**.
 - Font: **`Maple Mono NF CN`** ultra-condensed (ideal for CJK).
 - Key-binding **`C-c r`** reloads the whole config in-place.
-- OS specific tweaks for **macOS Sonoma** (24.x Darwin kernel).
 - Extra helpers in `rc.el` (package bootstrap, window layout, etc.).
 - Systemd / `launchctl` ready service files to run Emacs daemon.
 - Scripted installer & symlink manager for dot-files.
