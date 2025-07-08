@@ -21,6 +21,7 @@
 (require 'treemacs-config)
 (require 'desktop)
 (require 'femacs-server)
+(require 'femacs-tramp)
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
