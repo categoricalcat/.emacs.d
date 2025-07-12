@@ -44,9 +44,10 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-(rc/require 'leuven-theme)
-(custom-set-variables
- '(custom-enabled-themes '(leuven-dark)))
+(rc/require 'catppuccin-theme)
+(load-theme 'catppuccin :no-confirm)
+;; (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
+;; (catppuccin-reload)
 
 (rc/require 'elcord)
 (elcord-mode)
@@ -62,7 +63,6 @@
 
 ;; UI
 (custom-set-faces)
-(load-theme 'leuven-dark t)
 (set-face-attribute 'default nil
                     :family "Maple Mono NF CN"
                     :width 'ultra-condensed)
