@@ -11,7 +11,7 @@
 (setq tramp-default-method "ssh")
 
 ;; Optional: Reuse SSH connections for speed (uses ControlMaster)
-(setq tramp-use-ssh-controlmaster-options nil)
+(setq tramp-use-ssh-controlmaster-options t)
 
 (setq tramp-default-user "fufu")
 
