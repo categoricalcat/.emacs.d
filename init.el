@@ -49,8 +49,8 @@
 ;; (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
 ;; (catppuccin-reload)
 
-(rc/require 'elcord)
-(elcord-mode)
+;; (rc/require 'elcord)
+;; (elcord-mode)
 
 (setq desktop-dirname             "~/.emacs.d/desktop/"
       desktop-base-file-name      "emacs-desktop"

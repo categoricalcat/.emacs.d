@@ -7,7 +7,7 @@
 
 ;; Only configure and start server if not already running
 (unless (server-running-p)
-  (setq server-host "192.168.31.18")
+  (setq server-host "0.0.0.0")
 
   ;; 2. Choose a fixed port (or use 0 for random)
   (setq server-port 13245)        ; Recommend 5000-65535
