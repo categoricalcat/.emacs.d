@@ -8,21 +8,20 @@
 (require 'tramp)
 
 ;; Set default SSH method (recommended)
-(setq tramp-default-method "sshx")
+(setq tramp-default-method "ssh")
 
 ;; Optional: Reuse SSH connections for speed (uses ControlMaster)
-(setq tramp-use-ssh-controlmaster-options nil)
+(setq tramp-use-ssh-controlmaster-options t)
 
-(setq tramp-default-user "fufu"
-  tramp-verbose 6
-  password-cache-expiry 3600
-  tramp-ssh-controlmaster-options "")  ; Ensure ControlMaster is disabled
+(setq tramp-verbose 6
+  password-cache-expiry 3600)
 
-;; Verify TRAMP settings on load
+;; This message is helpful for confirming your setup.
 (add-hook 'after-init-hook
   (lambda ()
-    (message "TRAMP method: %s (sshx recommended for Prelude)"
-      tramp-default-method)))
+    (message "TRAMP method: %s, ControlMaster: %s"
+      tramp-default-method
+      (if tramp-use-ssh-controlmaster-options "enabled" "disabled"))))
 
 (provide 'femacs-tramp)
 ;;; femacs-tramp.el ends here
