@@ -45,9 +45,11 @@
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
 (rc/require 'catppuccin-theme)
-(load-theme 'catppuccin :no-confirm)
-;; (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
-;; (catppuccin-reload)
+;; Load theme only in graphics mode
+(when (display-graphic-p)
+  (load-theme 'catppuccin :no-confirm)
+  (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
+  (catppuccin-reload))
 
 (rc/require 'elcord)
 (elcord-mode)
