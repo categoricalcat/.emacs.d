@@ -99,7 +99,6 @@
 ;; Nix language support: syntax highlighting and LSP (nil/nixd)
 (rc/require 'nix-mode)
 (rc/require 'lsp-mode)
-(rc/require 'lsp-nix)
 
 ;; File associations
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
