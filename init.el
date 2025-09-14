@@ -51,6 +51,12 @@
   (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
   (catppuccin-reload))
 
+(rc/require 'moe-theme)
+(load-theme 'moe-dark)
+
+(rc/require 'kaolin-themes)
+
+;; disgor rpc
 (rc/require 'elcord)
 (elcord-mode)
 
