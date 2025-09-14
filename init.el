@@ -51,6 +51,12 @@
   (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
   (catppuccin-reload))
 
+(rc/require 'moe-theme)
+(load-theme 'moe-dark)
+
+(rc/require 'kaolin-themes)
+
+;; disgor rpc
 (rc/require 'elcord)
 (elcord-mode)
 
@@ -95,5 +101,20 @@
             (other-window 1)
             (split-window-below)
             ))
+
+;; Nix language support: syntax highlighting and LSP (nil/nixd)
+(rc/require 'nix-mode)
+(rc/require 'lsp-mode)
+
+;; File associations
+(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+(add-to-list 'auto-mode-alist '("\\.nixinc\\'" . nix-mode))
+
+;; Enable LSP and format-on-save for Nix
+(with-eval-after-load 'nix-mode
+  (add-hook 'nix-mode-hook #'lsp-deferred)
+  (add-hook 'nix-mode-hook
+            (lambda ()
+              (add-hook 'before-save-hook #'lsp-format-buffer nil t))))
 
 ;;; init.el ends here
