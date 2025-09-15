@@ -8,6 +8,8 @@
 ;; git submodule update --init --recursive
 (shell-command "git submodule update --init --recursive")
 
+(set-language-environment "UTF-8")
+
 ;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
 

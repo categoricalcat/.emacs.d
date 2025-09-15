@@ -10,7 +10,6 @@
 ;; Set default SSH method (recommended)
 (setq tramp-default-method "ssh")
 
-;; Optional: Reuse SSH connections for speed (uses ControlMaster)
 (setq tramp-use-ssh-controlmaster-options t)
 
 (setq tramp-verbose 6
