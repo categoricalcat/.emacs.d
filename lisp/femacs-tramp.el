@@ -8,9 +8,16 @@
 (require 'tramp)
 
 ;; Set default SSH method (recommended)
-(setq tramp-default-method "ssh")
+(setq tramp-default-method "sshx")
 
-(setq tramp-use-ssh-controlmaster-options t)
+;; Optional: Reuse SSH connections for speed (uses ControlMaster)
+;; (setq tramp-use-ssh-controlmaster-options t)
+
+(customize-set-variable
+ 'tramp-ssh-controlmaster-options
+ (concat
+  "-o ControlPath=/tmp/ssh-ControlPath-%%r@%%h:%%p "
+  "-o ControlMaster=auto -o ControlPersist=yes"))
 
 (setq tramp-verbose 6
   password-cache-expiry 3600)
