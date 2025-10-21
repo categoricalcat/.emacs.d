@@ -104,7 +104,7 @@
     (treemacs)
     (other-window 1)
     (split-window-below)))
-(add-hook 'emacs-startup-hook #'femacs/setup-initial-layout)
+;; (add-hook 'emacs-startup-hook #'femacs/setup-initial-layout)
 
 ;; Nix language support: syntax highlighting and LSP (nil/nixd)
 (rc/require 'nix-mode)
