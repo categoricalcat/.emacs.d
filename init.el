@@ -6,7 +6,7 @@
 ;;; Code:
 
 ;; git submodule update --init --recursive
-(shell-command "git submodule update --init --recursive")
+;; (shell-command "git submodule update --init --recursive")
 
 (set-language-environment "UTF-8")
 
@@ -67,6 +67,7 @@
 (setq desktop-dirname             "~/.emacs.d/desktop/"
       desktop-base-file-name      "emacs-desktop"
       desktop-load-locked-desktop nil)
+(setq desktop-restore-frames nil)
 (desktop-save-mode 1)
 (super-save-mode +1)
 
@@ -95,14 +96,15 @@
 ; (add-to-list 'default-frame-alist '(undecorated . t))
 (setq frame-title-format "%m 🩵🩷🤍 %b")
 
-(add-hook 'server-after-make-frame-hook
-          (lambda ()
-            ;; Ensure we're starting from a single window
-            (delete-other-windows)
-            (treemacs)
-            (other-window 1)
-            (split-window-below)
-            ))
+(defun femacs/setup-initial-layout ()
+  (when (and (null command-line-args-left)
+             (null buffer-file-name)
+             (string= (buffer-name) "*scratch*"))
+    (delete-other-windows)
+    (treemacs)
+    (other-window 1)
+    (split-window-below)))
+(add-hook 'emacs-startup-hook #'femacs/setup-initial-layout)
 
 ;; Nix language support: syntax highlighting and LSP (nil/nixd)
 (rc/require 'nix-mode)
