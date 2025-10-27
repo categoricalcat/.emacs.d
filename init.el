@@ -10,6 +10,20 @@
 
 (set-language-environment "UTF-8")
 
+;; Create necessary directories
+(defun femacs/ensure-directories ()
+  "Ensure necessary directories exist."
+  (let ((dirs (list
+               (expand-file-name "desktop" user-emacs-directory)
+               (expand-file-name "cache" user-emacs-directory)
+               (expand-file-name "server" user-emacs-directory))))
+    (dolist (dir dirs)
+      (unless (file-exists-p dir)
+        (make-directory dir t)
+        (message "Created directory: %s" dir)))))
+
+(femacs/ensure-directories)
+
 ;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
 
@@ -20,10 +34,21 @@
 ;; Them requires
 (require 'rc)
 (require 'path)
-(require 'treemacs-config)
+
+;; Load optional modules with error handling
+(condition-case err
+    (require 'treemacs-config)
+  (error (message "Failed to load treemacs-config: %s" err)))
+
 (require 'desktop)
-(require 'femacs-server)
-(require 'femacs-tramp)
+
+(condition-case err
+    (require 'femacs-server)
+  (error (message "Failed to load femacs-server: %s" err)))
+
+(condition-case err
+    (require 'femacs-tramp)
+  (error (message "Failed to load femacs-tramp: %s" err)))
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -46,42 +71,74 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-(rc/require 'catppuccin-theme)
-;; Load theme only in graphics mode
+;; Theme configuration
+;; Since we're using stylix at the system level without Home Manager integration,
+;; we'll use catppuccin which matches our stylix color scheme
 (when (display-graphic-p)
-  (load-theme 'catppuccin :no-confirm)
-  (setq catppuccin-flavor 'mocha) ;; or 'latte, 'macchiato, or 'mocha
-  (catppuccin-reload))
+  (condition-case err
+      (progn
+        (rc/require 'catppuccin-theme)
+        (setq catppuccin-flavor 'mocha)
+        (load-theme 'catppuccin :no-confirm)
+        (catppuccin-reload))
+    (error (message "Failed to load catppuccin theme: %s" err))))
 
-(rc/require 'moe-theme)
-(load-theme 'moe-dark)
+;; (rc/require 'moe-theme)
+;; (load-theme 'moe-dark)
 
-(rc/require 'kaolin-themes)
+;; (rc/require 'kaolin-themes)
 
-;; disgor rpc
-(rc/require 'elcord)
-(elcord-mode)
+;; Discord RPC (only in graphics mode)
+(when (display-graphic-p)
+  (condition-case err
+      (progn
+        (rc/require 'elcord)
+        (elcord-mode))
+    (error (message "Failed to load elcord: %s" err))))
 
 ;; (rc/require 'vterm)
 
-(setq desktop-dirname             "~/.emacs.d/desktop/"
+;; Desktop save mode configuration
+(setq desktop-dirname             (expand-file-name "desktop" user-emacs-directory)
       desktop-base-file-name      "emacs-desktop"
-      desktop-load-locked-desktop nil)
-(setq desktop-restore-frames nil)
-(desktop-save-mode 1)
-(super-save-mode +1)
+      desktop-load-locked-desktop nil
+      desktop-restore-frames nil)
 
-(rc/require 'golden-ratio)
-(golden-ratio-mode 1)
+(condition-case err
+    (desktop-save-mode 1)
+  (error (message "Failed to enable desktop-save-mode: %s" err)))
 
-;; UI
+;; Super save mode
+(condition-case err
+    (progn
+      (rc/require 'super-save)
+      (super-save-mode +1))
+  (error (message "Failed to load super-save: %s" err)))
+
+;; Golden ratio mode
+(condition-case err
+    (progn
+      (rc/require 'golden-ratio)
+      (golden-ratio-mode 1))
+  (error (message "Failed to load golden-ratio: %s" err)))
+
+;; UI Configuration
 (custom-set-faces)
-(set-face-attribute 'default nil
-                    :family "Maple Mono NF CN"
-                    :width 'ultra-condensed)
-; (menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
+
+;; Font configuration (only in graphics mode)
+(when (display-graphic-p)
+  (condition-case err
+      (set-face-attribute 'default nil
+                          :family "Maple Mono NF CN"
+                          :width 'ultra-condensed)
+    (error (message "Failed to set font: %s" err))))
+
+;; UI elements
+(when (fboundp 'tool-bar-mode)
+  (tool-bar-mode 0))
+(when (and (display-graphic-p) (fboundp 'scroll-bar-mode))
+  (scroll-bar-mode 0))
+
 (column-number-mode 1)
 (global-display-line-numbers-mode 1)
 (display-time-mode 1)
@@ -92,8 +149,9 @@
 ;; (setq initial-buffer-choice (lambda () (get-buffer-create "eshell")))
 ;; (setq-default major-mode 'eshell-mode)
 
-; ;; Mode Line Customization
-; (add-to-list 'default-frame-alist '(undecorated . t))
+;; Mode Line Customization
+;; (when (display-graphic-p)
+;;   (add-to-list 'default-frame-alist '(undecorated . t)))
 (setq frame-title-format "%m 🩵🩷🤍 %b")
 
 (defun femacs/setup-initial-layout ()
@@ -116,9 +174,10 @@
 
 ;; Enable LSP and format-on-save for Nix
 (with-eval-after-load 'nix-mode
-  (add-hook 'nix-mode-hook #'lsp-deferred)
-  (add-hook 'nix-mode-hook
-            (lambda ()
-              (add-hook 'before-save-hook #'lsp-format-buffer nil t))))
+  (when (fboundp 'lsp-deferred)
+    (add-hook 'nix-mode-hook #'lsp-deferred)
+    (add-hook 'nix-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook #'lsp-format-buffer nil t)))))
 
 ;;; init.el ends here

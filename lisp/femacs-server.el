@@ -27,9 +27,11 @@
   (setq server-auth-key (secure-hash 'sha256 (current-time-string)))
 
   ;; 7. Start server
-  ;; (server-start)
-
-  (message "Emacs server started on %s:%s" server-host server-port))
+  (condition-case err
+      (progn
+        (server-start)
+        (message "Emacs server started on %s:%s" server-host server-port))
+    (error (message "Failed to start Emacs server: %s" err))))
 
 (provide 'femacs-server)
 ;;; femacs-server.el ends here
