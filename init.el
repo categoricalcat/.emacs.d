@@ -34,6 +34,7 @@
 ;; Them requires
 (require 'rc)
 (require 'path)
+(rc/require 'eat)
 
 ;; Load optional modules with error handling
 (condition-case err
