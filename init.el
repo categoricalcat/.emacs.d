@@ -35,6 +35,7 @@
 (require 'rc)
 (require 'path)
 (rc/require 'eat)
+(rc/require 'yasnippet)
 
 ;; Load optional modules with error handling
 (condition-case err

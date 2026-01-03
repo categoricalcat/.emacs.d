@@ -16,7 +16,7 @@
   :config
   ;; Set the theme. 'treemacs-spacegrey-theme' is a nice choice.
   ;; You can also try 'treemacs-colors-alduin' or 'treemacs-classic-theme'.
-  (treemacs-load-theme "treemacs-spacegrey")
+  (treemacs-load-theme "Default")
 
   ;; --- Basic Customizations ---
   ;; For a minimal setup, we only set values that differ from the defaults.
@@ -43,6 +43,14 @@
 ;; Integration with projectile
 (use-package treemacs-projectile
   :after (treemacs projectile)
+  :ensure t)
+
+(use-package treemacs-icons-dired
+  :hook (dired-mode . treemacs-icons-dired-enable-once)
+  :ensure t)
+
+(use-package treemacs-magit
+  :after (treemacs magit)
   :ensure t)
 
 (provide 'treemacs-config)
