@@ -34,6 +34,7 @@
 ;; Them requires
 (require 'rc)
 (require 'path)
+(require 'femacs-shell)
 (rc/require 'eat)
 (rc/require 'yasnippet)
 
