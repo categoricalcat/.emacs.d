@@ -74,20 +74,23 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-;; Theme configuration
-;; Since we're using stylix at the system level without Home Manager integration,
-;; we'll use catppuccin which matches our stylix color scheme
-(when (display-graphic-p)
-  (condition-case err
-      (progn
-        (rc/require 'catppuccin-theme)
-        (setq catppuccin-flavor 'mocha)
-        (load-theme 'catppuccin :no-confirm)
-        (catppuccin-reload))
-    (error (message "Failed to load catppuccin theme: %s" err))))
+(rc/require 'modus-themes)
 
-;; (rc/require 'moe-theme)
-;; (load-theme 'moe-dark)
+;; Your customizations here:
+(setq modus-themes-to-toggle '(modus-operandi modus-vivendi)
+      modus-themes-to-rotate modus-themes-items
+      modus-themes-mixed-fonts t
+      modus-themes-variable-pitch-ui t
+      modus-themes-italic-constructs t
+      modus-themes-bold-constructs t
+      modus-themes-completions '((t . (bold)))
+      modus-themes-prompts '(bold)
+      modus-themes-headings
+      '((agenda-structure . (variable-pitch light 2.2))
+        (agenda-date . (variable-pitch regular 1.3))
+         (t . (regular 1.15))))
+
+(modus-themes-load-theme 'modus-vivendi)
 
 ;; (rc/require 'kaolin-themes)
 
