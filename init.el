@@ -26,17 +26,18 @@
 
 ;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
+(declare-function prelude-require-package "prelude-packages" (package))
 
 ;; Add the lisp directory to the load path
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
 
 ;; Them requires
-(require 'rc)
+
 (require 'path)
-(require 'femacs-shell)
-(rc/require 'eat)
-(rc/require 'yasnippet)
+;; (require 'femacs-shell)
+(prelude-require-package 'eat)
+(prelude-require-package 'yasnippet)
 
 ;; Load optional modules with error handling
 (condition-case err
@@ -49,9 +50,9 @@
     (require 'femacs-server)
   (error (message "Failed to load femacs-server: %s" err)))
 
-(condition-case err
-    (require 'femacs-tramp)
-  (error (message "Failed to load femacs-tramp: %s" err)))
+;;(condition-case err
+;;    (require 'femacs-tramp)
+;;  (error (message "Failed to load femacs-tramp: %s" err)))
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -74,7 +75,8 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-(rc/require 'modus-themes)
+(prelude-require-package 'modus-themes)
+(load-theme 'modus-vivendi t)
 
 ;; Your customizations here:
 (setq modus-themes-to-toggle '(modus-operandi modus-vivendi)
@@ -90,7 +92,7 @@
         (agenda-date . (variable-pitch regular 1.3))
          (t . (regular 1.15))))
 
-(modus-themes-load-theme 'modus-vivendi)
+
 
 ;; (rc/require 'kaolin-themes)
 
@@ -98,7 +100,7 @@
 (when (display-graphic-p)
   (condition-case err
       (progn
-        (rc/require 'elcord)
+        (prelude-require-package 'elcord)
         (elcord-mode))
     (error (message "Failed to load elcord: %s" err))))
 
@@ -117,14 +119,14 @@
 ;; Super save mode
 (condition-case err
     (progn
-      (rc/require 'super-save)
+      (prelude-require-package 'super-save)
       (super-save-mode +1))
   (error (message "Failed to load super-save: %s" err)))
 
 ;; Golden ratio mode
 (condition-case err
     (progn
-      (rc/require 'golden-ratio)
+      (prelude-require-package 'golden-ratio)
       (golden-ratio-mode 1))
   (error (message "Failed to load golden-ratio: %s" err)))
 
@@ -171,8 +173,8 @@
 ;; (add-hook 'emacs-startup-hook #'femacs/setup-initial-layout)
 
 ;; Nix language support: syntax highlighting and LSP (nil/nixd)
-(rc/require 'nix-mode)
-(rc/require 'lsp-mode)
+(prelude-require-package 'nix-mode)
+(prelude-require-package 'lsp-mode)
 
 ;; File associations
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
