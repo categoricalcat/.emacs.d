@@ -26,15 +26,14 @@
 
 ;; Load Prelude :3
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
-(declare-function prelude-require-package "prelude-packages" (package))
+(load (expand-file-name "lisp/path.el" user-emacs-directory))
+(load (expand-file-name "lisp/treemacs-config.el" user-emacs-directory))
 
 ;; Add the lisp directory to the load path
-(eval-and-compile
-  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
+;;(eval-and-compile
+;;  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
 
-;; Them requires
-
-(require 'path)
+;;(require 'path)
 ;; (require 'femacs-shell)
 (prelude-require-package 'eat)
 (prelude-require-package 'yasnippet)
@@ -46,13 +45,13 @@
 
 (require 'desktop)
 
-(condition-case err
-    (require 'femacs-server)
-  (error (message "Failed to load femacs-server: %s" err)))
+;; (condition-case err
+;;     (require 'femacs-server)
+;;   (error (message "Failed to load femacs-server: %s" err)))
 
-;;(condition-case err
-;;    (require 'femacs-tramp)
-;;  (error (message "Failed to load femacs-tramp: %s" err)))
+;; (condition-case err
+;;     (require 'femacs-tramp)
+;;   (error (message "Failed to load femacs-tramp: %s" err)))
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -60,10 +59,6 @@
 (setq-default line-spacing 0.0)
 
 ;; Definitions
-(defvar dir-prelude
-  (path-resolve path-emacs "prelude")
-  "Prelude directory.")
-
 (defvar this-file
   (path-resolve path-emacs "init.el")
   "This file.")
@@ -75,7 +70,7 @@
 
 (global-set-key (kbd "C-c r") 'load-file-user-init)
 
-(prelude-require-package 'modus-themes)
+;; (prelude-require-package 'modus-themes)
 (load-theme 'modus-vivendi t)
 
 ;; Your customizations here:
