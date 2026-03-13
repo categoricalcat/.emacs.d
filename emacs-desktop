@@ -1,0 +1,43 @@
+;; -*- mode: emacs-lisp; lexical-binding:t; coding: utf-8-emacs; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Wed Mar 11 20:20:41 2026
+;; Desktop file format version 208
+;; Emacs version 30.2
+
+;; Global section:
+(setq desktop-saved-frameset nil)
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring nil)
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+(setq file-name-history '("/tmp/4000539483/secrets.yaml" "~/the.files/.git/modules/nixos/COMMIT_EDITMSG" "~/k8s.yaml" "~/the.files/.git/modules/nixos/COMMIT_EDITMSG" "~/the.files/.git/modules/nixos/rebase-merge/git-rebase-todo" "~/the.files/.git/modules/nixos/COMMIT_EDITMSG" "~/the.files/nixos/" "~/the.files" "~/mandarin/" "~/the.files/.emacs.d/" "/home/fufud/the.files/rust/main.rs" "~/the.files/rust/" "~/the.files/nixos/" "~/the.files/" "~/the.files/nixos/" "~/Downloads/fix_as.patch" "~/the.files/nixos/" "~/the.files/.emacs.d/" "~/the.files/" "/home/fufud/the.files/nixos/modules/services" "~/the.files/nixos/" "/ssh:fufud.vpn:~/" "/ssh:fufud.vpn:hs-test/" "~/the.files/nixos/" "/ssh:fufud.vpn:hs-test/" "/ssh:fufud.vpn:~" "/ssh:fufud.vpn:hs-test/" "/scp:fufud.vpn:~/hs-test/" "~/the.files/.emacs.d/" "~/the.files/" "~/the.files/.emacs.d/" "~/.emacs.d/" "~/the.files/" "~/the.files/.emacs.d/" "~/the.files/" "~/the.files/.emacs.d/" "~/the.files/.emacs.d/lisp/" "~/the.files/" "~/the.files/.emacs.d/" "~/the.files/.config/niri/config.kdl" "~/" "~/the.files/.emacs.d/" "~/the.files/" "~/the.files/.emacs.d/" "~/the.files/.config/niri/config.kdl" "/ssh:fufud.vpn:hs-test/" "~/the.files/.emacs.d" "~/the.files/.emacs.d/" "~/the.files/.emacs.d" "~/the.files/.emacs.d/" "~/the.files/.emacs.d" "/ssh:fufud.vpn:hs-test/" "~" "/ssh:fufud.vpn:~/" "/ssh:fufud.vpn:~/hs-test/" "/ssh:fufud.vpn:~/" "/ssh:fufud.vpn:~/hs-test/" "~/the.files/.emacs.d/" "/ssh:fufud.vpn:~/hs-test/" "~/the.files/.emacs.d/" "/ssh:fufud.vpn:~/hs-test/" "/scp:fufud.vpn:~/hs-test/" "/scp:fufud.vpn:&&/" "~/the.files/.emacs.d/" "/scp:fufud.vpn:~/hs-test/" "~/the.files/.emacs.d/" "/ssh:fufud.vpn:~/the.files/" "/scp:fufud.vpn:~/hs-test/" "/ssh:fufud.vpn:" "~/the.files/.emacs.d/" "the.files/.emacs.d/" "/scp:fufud.vpn:" "~/the.files/.emacs.d/" "~/.cache/emacs/" "/ssh:fufud.vpn:&&/" "/scp:fufud.vpn:~/hs-test/" "/scp:fufud.vpn:~/the.files/" "/scp:fufud.vpn:~/" "~/the.files/" "/scp:fufud.vpn:&&/" "/scp:macbook:" "/sshx:fufud.vpn:~/" "/sshx:fufud.vpn:&&/" "/ssh:fufud.vpn:~/hs-test/" "/sshx:fufud.vpn:~/hs-test/"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 208
+  "/tmp/4000539483/secrets.yaml"
+  "secrets.yaml"
+  'yaml-mode
+  '(font-lock-mode display-line-numbers-mode show-smartparens-mode anzu-mode undo-tree-mode diff-hl-mode company-mode hl-todo-mode flycheck-mode visual-line-mode whitespace-mode subword-mode abbrev-mode)
+  880
+  '(838 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-display-time 27057 63671 381274 987000) (buffer-file-coding-system . undecided-unix) (truncate-lines))
+  '((mark-ring (838 838 838))))
+
+(desktop-create-buffer 208
+  "/home/yi/the.files/k8s.yaml"
+  "k8s.yaml"
+  'yaml-mode
+  '(font-lock-mode display-line-numbers-mode show-smartparens-mode anzu-mode undo-tree-mode diff-hl-mode company-mode hl-todo-mode flycheck-mode visual-line-mode whitespace-mode subword-mode abbrev-mode)
+  1
+  '(nil nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-display-time 27057 63669 671726 756000) (buffer-file-coding-system . undecided-unix) (truncate-lines))
+  '((mark-ring nil)))
+

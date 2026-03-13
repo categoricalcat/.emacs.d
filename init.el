@@ -2,6 +2,7 @@
 
 ;;; Commentary:
 ;;; 福福的emacs配置文件
+;;; bagunça do caralho
 
 ;;; Code:
 
@@ -28,6 +29,7 @@
 (load (expand-file-name "prelude/init.el" user-emacs-directory))
 (load (expand-file-name "lisp/path.el" user-emacs-directory))
 (load (expand-file-name "lisp/treemacs-config.el" user-emacs-directory))
+(load (expand-file-name "lisp/femacs-tramp.el" user-emacs-directory))
 
 ;; Add the lisp directory to the load path
 ;;(eval-and-compile
@@ -35,23 +37,18 @@
 
 ;;(require 'path)
 ;; (require 'femacs-shell)
-(prelude-require-package 'eat)
-(prelude-require-package 'yasnippet)
+(prelude-require-packages
+  '(
+     eat
+     yasnippet
+     drag-stuff
+     nix-mode
+     lsp-mode))
 
 ;; Load optional modules with error handling
 (condition-case err
     (require 'treemacs-config)
   (error (message "Failed to load treemacs-config: %s" err)))
-
-(require 'desktop)
-
-;; (condition-case err
-;;     (require 'femacs-server)
-;;   (error (message "Failed to load femacs-server: %s" err)))
-
-;; (condition-case err
-;;     (require 'femacs-tramp)
-;;   (error (message "Failed to load femacs-tramp: %s" err)))
 
 ;; windows size
 (add-to-list 'initial-frame-alist '(fullscreen . maximized))
@@ -87,10 +84,6 @@
         (agenda-date . (variable-pitch regular 1.3))
          (t . (regular 1.15))))
 
-
-
-;; (rc/require 'kaolin-themes)
-
 ;; Discord RPC (only in graphics mode)
 (when (display-graphic-p)
   (condition-case err
@@ -101,15 +94,18 @@
 
 ;; (rc/require 'vterm)
 
-;; Desktop save mode configuration
-(setq desktop-dirname             (expand-file-name "desktop" user-emacs-directory)
-      desktop-base-file-name      "emacs-desktop"
-      desktop-load-locked-desktop nil
-      desktop-restore-frames nil)
+(require 'desktop)
 
-(condition-case err
-    (desktop-save-mode 1)
-  (error (message "Failed to enable desktop-save-mode: %s" err)))
+;; Desktop save mode configuration
+(setq
+  desktop-dirname             (expand-file-name "desktop" user-emacs-directory)
+  desktop-base-file-name      "emacs-desktop"
+  desktop-load-locked-desktop t
+  desktop-auto-save-timeout 300
+  desktop-save t
+  desktop-restore-frames nil)
+
+(desktop-save-mode 1)
 
 ;; Super save mode
 (condition-case err
@@ -142,6 +138,7 @@
 (when (and (display-graphic-p) (fboundp 'scroll-bar-mode))
   (scroll-bar-mode 0))
 
+(menu-bar-mode 0)
 (column-number-mode 1)
 (global-display-line-numbers-mode 1)
 (display-time-mode 1)
@@ -167,9 +164,7 @@
     (split-window-below)))
 ;; (add-hook 'emacs-startup-hook #'femacs/setup-initial-layout)
 
-;; Nix language support: syntax highlighting and LSP (nil/nixd)
-(prelude-require-package 'nix-mode)
-(prelude-require-package 'lsp-mode)
+;; Nix language syntax: support highlighting and LSP (nil/nixd)
 
 ;; File associations
 (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
