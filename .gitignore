@@ -20,4 +20,5 @@ projectile-bookmarks.eld
 /server.*
 .cache
 .cursor
+.lsp-session-*
 emacs-desktop
