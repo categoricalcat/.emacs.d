@@ -1,3 +1,0 @@
-name,source,target,description
-prelude-modules,$DIR_EMACS/prelude-modules.el,./prelude/personal/prelude-modules.el,"Prelude modules"
-lisp,$DIR_EMACS/lisp/,./prelude/personal/,"Lisp library"

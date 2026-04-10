@@ -1,50 +1,28 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+set -euo pipefail
 
-# Configuration
+# Override with env vars or pass as arguments:
+#   REMOTE_USER=yi REMOTE_HOST=10.0.0.5 ./connect-remote-emacs.sh /some/file
 USER="${REMOTE_USER:-fufu}"
 HOST="${REMOTE_HOST:-192.168.31.18}"
 PORT="${REMOTE_PORT:-13245}"
-SERVER_FILE="$HOME/.emacs.d/server/remote-emacs-server"
-
-# File to edit (default to current directory)
+SERVER_FILE="${REMOTE_SERVER_FILE:-$HOME/.emacs.d/server/femacs}"
 FILE_TO_EDIT="${1:-.}"
 
-# Cleanup function
-cleanup() {
-    [[ $SSH_TUNNEL ]] && kill "$SSH_TUNNEL" 2>/dev/null
-}
+cleanup() { [[ "${SSH_PID:-}" ]] && kill "$SSH_PID" 2>/dev/null; }
 trap cleanup INT TERM EXIT
 
-# Create SSH tunnel
 echo "Creating SSH tunnel to ${USER}@${HOST}:${PORT}..."
-echo "You may be prompted for your SSH password..."
-
-# Start SSH tunnel in background after a delay to allow authentication
 ssh -f -N -L "${PORT}:localhost:${PORT}" "${USER}@${HOST}"
+SSH_PID=$(pgrep -f "ssh -f -N -L ${PORT}:localhost:${PORT}" | head -1)
 
-# Check if SSH command was successful
-if [[ $? -ne 0 ]]; then
-    echo "Error: Failed to create SSH tunnel"
-    exit 1
+if [[ -z "${SSH_PID:-}" ]]; then
+  echo "error: SSH tunnel process not found" >&2
+  exit 1
 fi
 
-# Get the PID of the SSH tunnel
-SSH_TUNNEL=$(pgrep -f "ssh -f -N -L ${PORT}:localhost:${PORT}")
-
-# Verify tunnel process is running
-if [[ -z "$SSH_TUNNEL" ]]; then
-    echo "Error: SSH tunnel process not found"
-    exit 1
-fi
-
-echo "SSH tunnel established (PID: $SSH_TUNNEL)"
-
-# Wait a moment for tunnel to fully establish
+echo "SSH tunnel established (PID: $SSH_PID)"
 sleep 1
 
-# Connect with emacsclient
 echo "Connecting to remote Emacs server..."
 emacsclient -c -f "$SERVER_FILE" "$FILE_TO_EDIT"
-
-# Clean up
-cleanup

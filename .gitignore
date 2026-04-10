@@ -22,3 +22,4 @@ projectile-bookmarks.eld
 .cursor
 .lsp-session-*
 emacs-desktop
+Makefile.local

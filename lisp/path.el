@@ -9,7 +9,7 @@
   "Home.")
 
 (defun path-resolve (dir file)
-  "DIR and FILE function."
+  "Resolve FILE relative to DIR (defaults to `path-home')."
   (expand-file-name file (or dir path-home)))
 
 (defconst path-emacs

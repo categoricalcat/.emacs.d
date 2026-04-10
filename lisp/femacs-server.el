@@ -1,32 +1,42 @@
-;;; femacs-server.el --- Server -*- lexical-binding: t; -*-
+;;; femacs-server.el --- Network-accessible Emacs server -*- lexical-binding: t; -*-
 
 ;;; Commentary:
+;; Starts a TCP server on all interfaces so a second machine on the LAN
+;; can connect with `emacsclient -f <server-auth-file> -c`.
+;;
+;; Workflow (two machines on the same network):
+;;
+;;   SERVER (machine A):
+;;     emacs --daemon          ; starts the TCP server on 0.0.0.0:13245
+;;
+;;   CLIENT (machine B):
+;;     1. Copy the server auth file from machine A:
+;;        scp A:~/.emacs.d/server/femacs ~/.emacs.d/server/femacs
+;;     2. Connect:
+;;        emacsclient -f ~/.emacs.d/server/femacs -c
+;;
+;;   Or use the SSH tunnel approach (see connect-remote-emacs.sh):
+;;     ssh -N -L 13245:localhost:13245 user@machine-A &
+;;     emacsclient -f ~/.emacs.d/server/femacs -c
 
 ;;; Code:
+
 (require 'server)
 
-;; Only configure and start server if not already running
+(defvar femacs-server-port 13245
+  "TCP port for the Emacs server.  Override via EMACS_SERVER_PORT env var.")
+
+(when-let ((env-port (getenv "EMACS_SERVER_PORT")))
+  (setq femacs-server-port (string-to-number env-port)))
+
 (unless (server-running-p)
-  (setq server-host "0.0.0.0")
+  (setq server-host "0.0.0.0"
+        server-port femacs-server-port
+        server-use-tcp t
+        server-name "femacs"
+        server-auth-dir (expand-file-name "server" user-emacs-directory)
+        server-auth-key (server-generate-key))
 
-  ;; 2. Choose a fixed port (or use 0 for random)
-  (setq server-port 13245)        ; Recommend 5000-65535
-
-  ;; 3. Use TCP protocol (required for tunneling)
-  (setq server-use-tcp t)
-
-  ;; 4. Optional: Set server name for identification
-  (setq server-name "remote-emacs-server")
-
-  ;; 5. Optional: Persistent server (survives frame closes)
-  ;; (setq server-mode t)
-
-  ;; 6. Security hardening (recommended)
-  (setq server-auth-dir (expand-file-name "~/.emacs.d/server/"))
-  (setq generated-key (server-generate-key))
-  (setq server-auth-key (secure-hash 'sha256 (current-time-string)))
-
-  ;; 7. Start server
   (condition-case err
       (progn
         (server-start)

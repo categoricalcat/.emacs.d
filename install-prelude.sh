@@ -1,17 +1,18 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env bash
+set -euo pipefail
 
-./run.sh stop_daemon
+cd "$(dirname "$0")"
 
-echo "[femacs] removing prelude"
-rm -rf prelude
+command -v emacs >/dev/null || { echo "error: emacs not found"; exit 1; }
+command -v git   >/dev/null || { echo "error: git not found";   exit 1; }
 
-echo "[femacs] updating submodules"
-git submodule update --init --recursive --remote
+EMACS_VER=$(emacs --version | head -1 | grep -oP '\d+\.\d+')
+echo "[femacs] emacs $EMACS_VER detected"
 
-echo "[femacs] symlinking all"
-./run.sh symlink_all symlinks.csv
+echo "[femacs] initializing submodules"
+make submodule
 
-echo "[femacs] starting daemon"
-./run.sh start_daemon
+echo "[femacs] linking config"
+make link
 
-echo "[femacs] done"
+echo "[femacs] done — start emacs or run: make start"

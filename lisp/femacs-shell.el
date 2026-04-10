@@ -1,24 +1,18 @@
-;;; femacs-shell.el --- Shell selection for Eshell/EAT -*- lexical-binding: t; -*-
+;;; femacs-shell.el --- Shell / terminal configuration -*- lexical-binding: t; -*-
 
 ;;; Commentary:
-;; Minimal shell config: Windows -> PowerShell, Others -> zsh.
+;; Configure the EAT terminal emulator: PowerShell on Windows, zsh elsewhere.
 
 ;;; Code:
 
-;;;###autoload
-(defun femacs-shell-setup ()
-  "Setup EAT to use PowerShell on Windows and zsh elsewhere."
+(with-eval-after-load 'eat
   (let ((shell (if (eq system-type 'windows-nt) "powershell.exe" "zsh")))
-    (with-eval-after-load 'eat
-      (dolist (var '(eat-shell
-                     eat-default-shell
-                     eat-shell-command
-                     eat-default-shell-command))
-        (when (boundp var)
-          (set var shell))))))
-
-;; Apply immediately on load.
-(femacs-shell-setup)
+    (dolist (var '(eat-shell
+                   eat-default-shell
+                   eat-shell-command
+                   eat-default-shell-command))
+      (when (boundp var)
+        (set var shell)))))
 
 (provide 'femacs-shell)
 ;;; femacs-shell.el ends here
