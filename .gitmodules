@@ -1,3 +1,4 @@
 [submodule "prelude"]
 path = prelude
+branch = master
 url = https://github.com/bbatsov/prelude.git
